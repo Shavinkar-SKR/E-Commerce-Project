@@ -11,6 +11,6 @@ connectDatabase();
 app.listen(process.env.PORT, () => {
   //.listen creates a http server using express module
   console.log(
-    `Server is running on Port: ${process.env.PORT} in ${process.env.NODE_ENV} mode`
+    `Server is running on Port: ${process.env.PORT} in ${process.env.NODE_ENV}mode`
   );
 });
