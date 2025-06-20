@@ -86,6 +86,7 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-const prodSchema = mongoose.model("Product", productSchema); //blueprint of the schema is given and in return it returns a model file
+let prodModel = mongoose.model("Product", productSchema); //blueprint of the schema is given and in return it returns a model file
+//Here ""Product"" is used to create a collection in MongoDB as "products" - Mongo automatically creates the collection in plural form of "Product"
 
-module.exports = prodSchema;
+module.exports = prodModel;
