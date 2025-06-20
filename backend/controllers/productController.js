@@ -19,3 +19,20 @@ exports.newProduct = async (req, res, next) => {
     product, //product: product - both are fine since JS handle product has key and value pair
   });
 };
+
+//Get One Product - api/v1/product/:id
+exports.getOneProduct = async (req, res, next) => {
+  const product = await productModel.findById(req.params.id);
+
+  if (!product) {
+    res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    product,
+  });
+};
