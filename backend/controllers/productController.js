@@ -1,4 +1,5 @@
 const productModel = require("../models/productModel");
+const ErrorHandler = require("../utils/errorHandler");
 
 //Get Product - /api/v1/products
 exports.getProducts = async (req, res, next) => {
@@ -26,10 +27,15 @@ exports.getOneProduct = async (req, res, next) => {
 
   if (!product) {
     //if proudct is null then it shows a 404 error saying product not found
-    res.status(404).json({
-      success: false,
-      message: "Product not found",
-    });
+    // res.status(404).json({
+    //   success: false,
+    //   message: "Product not found",
+    // });
+    return next(new ErrorHandler("Product not found test", 404));
+    //next() simply moves from one middleware to the next.
+    //This creates an error object with message and statusCode.
+    // This error object is passed to Express using next(err).
+    // Express automatically forwards this error to any middleware that has the signature: (err, req, res, next) => {....}
   }
 
   res.status(200).json({
@@ -66,7 +72,6 @@ exports.updateProduct = async (req, res, next) => {
 //Delete Product - /api/v1/product:id
 exports.deleteProduct = async (req, res, next) => {
   const product = await productModel.findById(req.params.id);
-  console.log(product._id);
 
   if (!product) {
     return res.status(404).json({
