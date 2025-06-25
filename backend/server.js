@@ -25,3 +25,13 @@ process.on("unhandledRejection", (err) => {
     process.exit(1); //to stop node program added a callback function stop using exit()
   });
 });
+
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log(`Shutting down the server due to uncaught exception error`);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+console.log(a); //at this place the uncaught exception error occurs, because a is not defined
