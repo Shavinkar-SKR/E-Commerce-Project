@@ -34,4 +34,4 @@ process.on("uncaughtException", (err) => {
   });
 });
 
-console.log(a); //at this place the uncaught exception error occurs, because a is not defined
+//console.log(a); //at this place the uncaught exception error occurs, because a is not defined
