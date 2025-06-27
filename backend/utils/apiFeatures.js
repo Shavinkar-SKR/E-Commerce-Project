@@ -14,11 +14,27 @@ class APIFeatures {
         }
       : {}; //If no keyword, it passes an empty object — meaning "no search filter applied.";
 
-    // console.log({ keyword });
-    // console.log({ ...keyword });
+    // console.log({ keyword }); { keyword: { name: { '$regex': 'Inspiron', '$options': 'i' } } }
+    // console.log({ ...keyword }); { name: { '$regex': 'Inspiron', '$options': 'i' } }
     this.query.find({ ...keyword }); //This means: "Find all products where the name contains 'product name', case-insensitively."
 
     return this; //return current class instance, by writing this allows for method chaining
+  }
+
+  filter() {
+    const queryStrCopy = { ...this.queryStr };
+    //query parameters before removing - reason is "keyword" not included as a property so remove keyword
+    console.log(queryStrCopy);
+
+    //removing parameters
+    const removeFields = ["keyword"];
+    removeFields.forEach((field) => delete queryStrCopy[field]);
+
+    //after removing
+    console.log(queryStrCopy);
+
+    this.query.find(queryStrCopy);
+    return this;
   }
 }
 

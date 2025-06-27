@@ -5,7 +5,9 @@ const APIFeatures = require("../utils/apiFeatures");
 
 //Get Product - /api/v1/products
 exports.getProducts = async (req, res, next) => {
-  const apiFeatures = new APIFeatures(productModel.find(), req.query).search();
+  const apiFeatures = new APIFeatures(productModel.find(), req.query)
+    .search()
+    .filter();
   //passes productModel.find() into the constructor. That does not execute the query immediately — it creates a Mongoose Query object, not a Promise yet.
   const products = await apiFeatures.query;
   res.status(200).json({
