@@ -4,10 +4,13 @@ const catchAsyncError = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 
 //Get Product - /api/v1/products
-exports.getProducts = async (req, res, next) => {
+exports.getProducts = catchAsyncError(async (req, res, next) => {
+  const resPerPage = 2;
   const apiFeatures = new APIFeatures(productModel.find(), req.query)
     .search()
-    .filter();
+    .filter()
+    .paginate(resPerPage);
+
   //passes productModel.find() into the constructor. That does not execute the query immediately — it creates a Mongoose Query object, not a Promise yet.
   const products = await apiFeatures.query;
   res.status(200).json({
@@ -15,7 +18,7 @@ exports.getProducts = async (req, res, next) => {
     count: products.length,
     products,
   });
-};
+});
 
 //Create Product - /api/v1/product/new
 exports.newProduct = catchAsyncError(async (req, res, next) => {
