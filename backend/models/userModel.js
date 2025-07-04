@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -44,6 +45,12 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10); //It defines how many times the hashing algorithm is applied internally.
   //means: hash it using a salt, and repeat the hashing process 2^10 = 1024 times
 }); //before saving a user document it hashes the password using bcrypt module
+
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE_TIME,
+  });
+};
 
 let userModel = mongoose.model("User", userSchema);
 

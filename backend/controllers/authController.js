@@ -15,9 +15,12 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   //This does not delete the password from the database.
   //It just removes it from the response object.
 
+  const token = user.getJwtToken();
+
   res.status(201).json({
     success: true,
     message: "New user created successfully",
     user,
+    token,
   });
 });
