@@ -1,6 +1,9 @@
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const userModel = require("../models/userModel");
+const ErrorHandler = require("../utils/errorHandler");
+const generateToken = require("../utils/jwt");
 
+//Creates a user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password, avatar } = req.body; //Destructure user details (name, email, password, avatar) from request body
 
@@ -11,16 +14,36 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     password,
     avatar,
   });
-  // user.password = undefined; //Before sending the user in the response, manually set the password to undefined:
+  //user.password = undefined; //Before sending the user in the response, manually set the password to undefined:
   //This does not delete the password from the database.
   //It just removes it from the response object.
 
-  const token = user.getJwtToken();
+  generateToken(user, 201, res);
+});
 
-  res.status(201).json({
-    success: true,
-    message: "New user created successfully",
-    user,
-    token,
-  });
+//Login
+exports.loginUser = catchAsyncErrors(async (req, res, next) => {
+  const { email, password } = req.body; //catching the email and password from request body
+
+  //Checks if email and passwords are empty
+  if (!email || !password) {
+    return next(
+      new ErrorHandler("Please enter the email and the password", 400)
+    );
+  }
+
+  //finds the user in the db corresponding to the email and password is also attached for comparison
+  const user = await userModel.findOne({ email }).select("+password");
+
+  //Checks if user is absent
+  if (!user) {
+    return next(new ErrorHandler("Invalid Email or Password", 401));
+  }
+
+  //Compares the user entered password with db stored password for an email
+  if (!(await user.isPasswordValid(password))) {
+    return next(new ErrorHandler("Invalid Email or Password", 401));
+  }
+
+  generateToken(user, 201, res);
 });

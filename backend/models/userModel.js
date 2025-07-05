@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter the password"],
     maxlength: [6, "Password cannot exceed 6 characters"],
-    //select: false, //It hides the field from being returned in queries like .find() or .findOne().
+    select: false, //It hides the field from being returned in queries like .find() or .findOne().
     //const user = await User.findOne({ email }).select("+password");
   },
   avatar: {
@@ -47,9 +47,13 @@ userSchema.pre("save", async function (next) {
 }); //before saving a user document it hashes the password using bcrypt module
 
 userSchema.methods.getJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE_TIME,
   });
+};
+
+userSchema.methods.isPasswordValid = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 let userModel = mongoose.model("User", userSchema);
