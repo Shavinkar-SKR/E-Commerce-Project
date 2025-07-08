@@ -9,7 +9,7 @@ app.use(express.json()); //It parses incoming requests with Content-Type: applic
 // When you're sending data as a JSON object (usually from the frontend using fetch, axios, Postman, etc.),
 // the Express app needs to parse that incoming raw JSON string.
 // Hey, if any request comes with Content-Type: application/json, parse the body and make it available as req.body."
-app.use(cookieparser()); //
+app.use(cookieparser()); //Parses cookies from incoming requests — needed for reading JWT token in authentication middleware
 
 app.use("/api/v1", productsRouter);
 app.use("/api/v1", authRouter);
