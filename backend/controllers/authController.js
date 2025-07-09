@@ -1,5 +1,6 @@
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const userModel = require("../models/userModel");
+const sendEmail = require("../utils/email");
 const ErrorHandler = require("../utils/errorHandler");
 const generateToken = require("../utils/jwt");
 
@@ -48,6 +49,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   generateToken(user, 201, res);
 });
 
+//Logout
 exports.logoutUser = (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
@@ -62,3 +64,47 @@ exports.logoutUser = (req, res, next) => {
     .status(200)
     .json({ success: true, message: "Logged out successfully" });
 };
+
+//funtion handling to reset a password
+exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await userModel.findOne({ email: req.body.email }); //finds the user with this email from the request body
+
+  if (!user) {
+    //if email is absent, throws an error message
+    return next(new ErrorHandler("User not found with this email"), 404);
+  }
+
+  const resetToken = user.getResetToken(); //generated reset token is set here
+  await user.save({ validateBeforeSave: false }); //after generating reset token it is saved to db and validations set to false before saving
+
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/password/reset/${resetToken}`; //reset url is defined for user reset the password
+  //req.protocol give http or https and host gives 127.0.0.1
+
+  const message = `
+  Dear ${user.name},
+  \n\n A password reset event has been triggered. The password reset window is limited to 30 minutes 
+  \n\n To complete the password reset process, visit the following link:
+  \n\n ${resetUrl} 
+  \n\n If you have not requested this email, please ignore it. \n\n Thanks,\n The E-Commerce Market place
+  `;
+
+  try {
+    sendEmail({
+      email: user.email,
+      subject: "Ecommerce Market place Password Recovery",
+      message,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `Email was sent successfully to ${user.email}`,
+    });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorHandler(error.message, 500));
+  }
+});

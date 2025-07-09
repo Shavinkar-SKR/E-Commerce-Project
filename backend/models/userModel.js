@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
+  //this middleware triggers everytime save function is called
+  if (!this.isModified("password")) {
+    //this checks if the password is unchanged before saving the document
+    next();
+  }
   this.password = await bcrypt.hash(this.password, 10); //It defines how many times the hashing algorithm is applied internally.
   //means: hash it using a salt, and repeat the hashing process 2^10 = 1024 times
 }); //before saving a user document it hashes the password using bcrypt module
@@ -59,14 +64,11 @@ userSchema.methods.isPasswordValid = async function (enteredPassword) {
 
 userSchema.methods.getResetToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex"); //generates a random token, raw token to send via email
-  console.log(resetToken);
 
   this.resetPasswordToken = crypto //hash the token using SHA-256 and store in DB
     .createHash("sha256") //creates a Hash object using the SHA-256 algorithm or chooses sha-256 algorithm.
     .update(resetToken) //feeds/puts the token into hash
     .digest("hex"); //finalizes the hash. Returns the hashed result
-
-  console.log(this.resetPasswordToken);
 
   this.resetPasswordTokenExpire = Date.now() + 1000 * 60 * 30; //set expiration time for token (30 minutes from now).
   //This is stored in DB so you can check if token is still valid
