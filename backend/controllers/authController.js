@@ -3,6 +3,7 @@ const userModel = require("../models/userModel");
 const sendEmail = require("../utils/email");
 const ErrorHandler = require("../utils/errorHandler");
 const generateToken = require("../utils/jwt");
+const crypto = require("crypto");
 
 //Creates a user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -66,7 +67,7 @@ exports.logoutUser = (req, res, next) => {
 };
 
 //funtion handling to reset a password
-exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
+exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await userModel.findOne({ email: req.body.email }); //finds the user with this email from the request body
 
   if (!user) {
@@ -107,4 +108,34 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
     return next(new ErrorHandler(error.message, 500));
   }
+});
+
+exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await userModel.findOne({
+    resetPasswordToken,
+    resetPasswordTokenExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler("Password reset token is either invalid or expired"),
+      401
+    );
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorHandler("Passwords does not match", 422));
+  }
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordTokenExpire = undefined;
+  await user.save({ validateBeforeSave: false });
+
+  generateToken(user, 201, res);
 });
