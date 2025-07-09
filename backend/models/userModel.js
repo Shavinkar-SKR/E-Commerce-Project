@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
   resetPasswordTokenExpire: {
     type: Date,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId, //stores the ID of the user who created the product
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

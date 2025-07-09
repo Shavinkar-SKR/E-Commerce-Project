@@ -22,6 +22,8 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
 //Create Product - /api/v1/product/new
 exports.newProduct = catchAsyncError(async (req, res, next) => {
+  req.body.user = req.user.id; //attach the ID of the logged-in user to the request body (to track which user created the product)
+  //req.user is set by the isAuthenticatedUser middleware after verifying the JWT token, in that id is set to the user field
   const product = await productModel.create(req.body);
   res.status(201).json({
     //201 HTTP status code - The request was successful and a new resource was created on the server
