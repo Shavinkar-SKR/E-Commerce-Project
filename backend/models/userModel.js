@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -54,6 +55,23 @@ userSchema.methods.getJwtToken = function () {
 
 userSchema.methods.isPasswordValid = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.getResetToken = function () {
+  const resetToken = crypto.randomBytes(20).toString("hex"); //generates a random token, raw token to send via email
+  console.log(resetToken);
+
+  this.resetPasswordToken = crypto //hash the token using SHA-256 and store in DB
+    .createHash("sha256") //creates a Hash object using the SHA-256 algorithm or chooses sha-256 algorithm.
+    .update(resetToken) //feeds/puts the token into hash
+    .digest("hex"); //finalizes the hash. Returns the hashed result
+
+  console.log(this.resetPasswordToken);
+
+  this.resetPasswordTokenExpire = Date.now() + 1000 * 60 * 30; //set expiration time for token (30 minutes from now).
+  //This is stored in DB so you can check if token is still valid
+
+  return resetToken; //return the raw (unhashed) token, so it can be sent via email
 };
 
 let userModel = mongoose.model("User", userSchema);
