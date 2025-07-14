@@ -24,6 +24,7 @@ module.exports = (err, req, res, next) => {
       //as defined in the mongoose document, in the array it contains name, price, description,.... etc
       //for each property it has a message. So, that is retrieved here
       error = new ErrorHandler(message, 400); // Replace original error with custom error handler object
+      err.statusCode = 400;
     }
 
     if (err.name == "CastError") {
@@ -31,17 +32,17 @@ module.exports = (err, req, res, next) => {
       error = new ErrorHandler(message, 404);
     }
 
-    if ((err.code = 11000)) {
+    if (err.code == 11000) {
       message = `Duplicate ${Object.keys(err.keyValue)} error`;
       error = new ErrorHandler(message, 409); //409 - Conflict in request, such as duplicate resource (e.g., user already exists).
     }
 
-    if ((err.name = "JSONWebTokenError")) {
+    if (err.name == "JSONWebTokenError") {
       message = `JSON Web Token is invalid. Try again`;
       error = new ErrorHandler(message, 401); //401 - Unauthorized, Authentication required (e.g., missing/invalid token).
     }
 
-    if ((err.name = "TokenExpiredError")) {
+    if (err.name == "TokenExpiredError") {
       message = `JSON Web Token is expired. Try again`;
       error = new ErrorHandler(message, 401);
     }

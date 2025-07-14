@@ -5,7 +5,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const generateToken = require("../utils/jwt");
 const crypto = require("crypto");
 
-//Creates a user
+//Creates a user - /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password, avatar } = req.body; //Destructure user details (name, email, password, avatar) from request body
 
@@ -23,7 +23,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   generateToken(user, 201, res);
 });
 
-//Login
+//Login - /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body; //catching the email and password from request body
 
@@ -50,7 +50,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   generateToken(user, 201, res);
 });
 
-//Logout
+//Logout - /api/v1/logout
 exports.logoutUser = (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
@@ -66,7 +66,7 @@ exports.logoutUser = (req, res, next) => {
     .json({ success: true, message: "Logged out successfully" });
 };
 
-//Handles forgot password request
+//Handles forgot password request - /api/v1/password/forgot
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await userModel.findOne({ email: req.body.email }); //finds the user with the email from the request body
 
@@ -112,7 +112,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-//Handles password reset logic using token
+//Handles password reset logic using token - /api/v1/password/reset/:token
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   const resetPasswordToken = crypto //Takes the plain token from the URL, hash the token to match with DB stored hashed token
     .createHash("sha256")
@@ -146,7 +146,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   generateToken(user, 201, res); //log in the user automatically by generating JWT token
 });
 
-//Returns the data of an authenticated/logged in user
+//Returns the data of an authenticated/logged in user - /api/v1/myprofile
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await userModel.findById(req.user.id); //req.user object comes from isAuthenticated middleware
   res.status(200).json({
@@ -155,6 +155,7 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+//Functionality to update the password - /api/v1/password/change
 exports.changePassword = catchAsyncErrors(async (req, res, next) => {
   const user = await userModel.findById(req.user.id).select("+password"); //finds the user by id by attaching password field to be visible
 
@@ -169,5 +170,24 @@ exports.changePassword = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Password updated successfully",
+  });
+});
+
+//Functionality to Update Profile - /api/v1/update
+exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Profile Updated Successfully",
+    user,
   });
 });
