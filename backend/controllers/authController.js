@@ -66,9 +66,9 @@ exports.logoutUser = (req, res, next) => {
     .json({ success: true, message: "Logged out successfully" });
 };
 
-//funtion handling to reset a password
+//Handles forgot password request
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await userModel.findOne({ email: req.body.email }); //finds the user with this email from the request body
+  const user = await userModel.findOne({ email: req.body.email }); //finds the user with the email from the request body
 
   if (!user) {
     //if email is absent, throws an error message
@@ -89,36 +89,40 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   \n\n To complete the password reset process, visit the following link:
   \n\n ${resetUrl} 
   \n\n If you have not requested this email, please ignore it. \n\n Thanks,\n The E-Commerce Market place
-  `;
+  `; //custom message that is sent as body to the email
 
   try {
     sendEmail({
-      email: user.email,
+      //sends the email with the subject and message to the user
+      email: user.email, //recipient email address
       subject: "Ecommerce Market place Password Recovery",
-      message,
+      message, //email message content with reset link
     });
 
     res.status(200).json({
+      //respond with success if email is sent
       success: true,
       message: `Email was sent successfully to ${user.email}`,
     });
   } catch (error) {
-    user.resetPasswordToken = undefined;
+    user.resetPasswordToken = undefined; //remove the reset token and its expiry from the user model
     user.resetPasswordTokenExpire = undefined;
     await user.save({ validateBeforeSave: false });
     return next(new ErrorHandler(error.message, 500));
   }
 });
 
+//Handles password reset logic using token
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
-  const resetPasswordToken = crypto
+  const resetPasswordToken = crypto //Takes the plain token from the URL, hash the token to match with DB stored hashed token
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
 
   const user = await userModel.findOne({
+    //find user whose token matches and token has not expired
     resetPasswordToken,
-    resetPasswordTokenExpire: { $gt: Date.now() },
+    resetPasswordTokenExpire: { $gt: Date.now() }, //$gt = greater than now
   });
 
   if (!user) {
@@ -128,14 +132,16 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+  //if passwords do not match, return an error
   if (req.body.password !== req.body.confirmPassword) {
     return next(new ErrorHandler("Passwords does not match", 422));
   }
 
+  //set new password and clear reset token fields
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordTokenExpire = undefined;
-  await user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false }); //disables validations like email format or required password (because you're not updating those fields)
 
-  generateToken(user, 201, res);
+  generateToken(user, 201, res); //log in the user automatically by generating JWT token
 });
