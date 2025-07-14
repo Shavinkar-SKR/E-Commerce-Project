@@ -24,7 +24,7 @@ module.exports = (err, req, res, next) => {
       //as defined in the mongoose document, in the array it contains name, price, description,.... etc
       //for each property it has a message. So, that is retrieved here
       error = new ErrorHandler(message, 400); // Replace original error with custom error handler object
-      err.statusCode = 400;
+      //err.statusCode = 400;
     }
 
     if (err.name == "CastError") {
@@ -47,7 +47,7 @@ module.exports = (err, req, res, next) => {
       error = new ErrorHandler(message, 401);
     }
 
-    res.status(err.statusCode).json({
+    res.status(error.statusCode).json({
       success: false,
       message: error.message || "Internal Server Error",
     });
