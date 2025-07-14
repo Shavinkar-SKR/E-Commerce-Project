@@ -145,3 +145,12 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   generateToken(user, 201, res); //log in the user automatically by generating JWT token
 });
+
+//Returns the data of an authenticated/logged in user
+exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await userModel.findById(req.user.id); //req.user object comes from isAuthenticated middleware
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
