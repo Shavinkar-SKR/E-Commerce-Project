@@ -54,12 +54,26 @@ exports.getOneOrder = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-//Get Logged In User Orders - api/v1/order/
+//Get Logged In User Orders - api/v1/order
 exports.myorders = catchAsyncErrors(async (req, res, next) => {
   const orders = await orderModel.find({ user: req.user.id });
 
   res.status(200).json({
     success: true,
+    orders,
+  });
+});
+
+//Admin: Get All Orders - api/v1/orders
+exports.getOrders = catchAsyncErrors(async (req, res, next) => {
+  const orders = await orderModel.find();
+
+  let totalAmount = 0; //accumulates every orders total price
+  orders.forEach((order) => (totalAmount += order.totalPrice));
+
+  res.status(200).json({
+    success: true,
+    totalAmount,
     orders,
   });
 });
