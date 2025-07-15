@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderSchema = mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   shippingInfo: {
     address: {
       type: String,
@@ -54,7 +54,7 @@ const orderSchema = mongoose.Schema({
       //It refers to a document in the Product collection.
       //Helps link each item in the order to a real product in your store.
       product: {
-        type: mongoose.SchemaType.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         required: true,
         ref: "Product",
       },
