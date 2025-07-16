@@ -3,95 +3,55 @@
     "name": "OPPO F21s Pro 5G",
     "price": 245.67,
     "description": "OPPO F21S Pro 5G is a powerful device with amazing features and a sleek design.",
-    "ratings": "4.5",
+    "ratings": "0",
     "images": [{ "image": "product_87759895.jpg" }],
     "category": "Mobile phones",
     "seller": "Amazon",
     "stock": 5,
-    "numOfReviews": 15,
-    "reviews": [
-      {
-        "name": "John Doe",
-        "rating": "5",
-        "comment": "Amazing phone, worth every penny!"
-      },
-      {
-        "name": "Jane Smith",
-        "rating": "4",
-        "comment": "Good features but battery could be better."
-      }
-    ]
+    "reviews": []
   },
   {
     "name": "Dell Inspiron 15 Laptop",
     "price": 699.99,
     "description": "Dell Inspiron 15 with Intel i5 processor and 8GB RAM, suitable for office and school work.",
-    "ratings": "4.2",
+    "ratings": "0",
     "images": [{ "image": "product_23984723.jpg" }],
     "category": "Laptops",
     "seller": "Dell Official Store",
     "stock": 8,
-    "numOfReviews": 10,
-    "reviews": [
-      {
-        "name": "Alice Brown",
-        "rating": "4",
-        "comment": "Smooth performance but average display."
-      }
-    ]
+    "reviews": []
   },
   {
     "name": "Sony WH-1000XM5 Headphones",
     "price": 299.0,
     "description": "Industry-leading noise canceling headphones with premium sound quality.",
-    "ratings": "4.8",
+    "ratings": "0",
     "images": [{ "image": "product_98437482.jpg" }],
     "category": "Headphones",
     "seller": "Sony Center",
     "stock": 12,
-    "numOfReviews": 22,
-    "reviews": [
-      {
-        "name": "Chris Evans",
-        "rating": "5",
-        "comment": "Perfect noise cancelation and comfort."
-      }
-    ]
+    "reviews": []
   },
   {
     "name": "The Psychology of Money",
     "price": 15.99,
     "description": "A book that teaches how money works and how to make better financial decisions.",
-    "ratings": "4.7",
+    "ratings": "0",
     "images": [{ "image": "product_87364512.jpg" }],
     "category": "Books",
     "seller": "Flipkart",
     "stock": 20,
-    "numOfReviews": 50,
-    "reviews": [
-      {
-        "name": "Nina Patel",
-        "rating": "5",
-        "comment": "A must-read for personal finance beginners."
-      }
-    ]
+    "reviews": []
   },
   {
     "name": "Nike Air Zoom Pegasus 40",
     "price": 129.99,
     "description": "Running shoes designed for comfort and long-distance runs with breathable mesh.",
-    "ratings": "4.3",
+    "ratings": "0",
     "images": [{ "image": "product_12734985.jpg" }],
     "category": "Clothes/Shoes",
     "seller": "Nike",
     "stock": 10,
-    "numOfReviews": 18,
-    "reviews": [
-      {
-        "name": "Ravi Kumar",
-        "rating": "4",
-        "comment": "Very comfortable but runs slightly small."
-      }
-    ]
+    "reviews": []
   }
 ]

@@ -3,6 +3,8 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 
+//Managing Products
+
 //Get Product - /api/v1/products
 exports.getProducts = catchAsyncError(async (req, res, next) => {
   const resPerPage = 2;
@@ -98,3 +100,54 @@ exports.deleteProduct = async (req, res, next) => {
     message: "Product deleted!",
   });
 };
+
+//Managing Reviews
+
+//Creating review - api/v1/review
+exports.newReview = catchAsyncError(async (req, res, next) => {
+  const { productId, rating, comment } = req.body; //productId is retrieved here to access the document of that product
+
+  const review = {
+    user: req.user.id, //stores the id of the current logged in user
+    rating,
+    comment,
+  };
+
+  const product = await productModel.findById(productId);
+
+  //this checks if the user has already posted the comment for the product, returning a boolean value
+  const isReviewed = product.reviews.find((review) => {
+    return review.user.toString() == req.user.id.toString(); //user id is converted to string
+  });
+
+  if (isReviewed) {
+    //updating the review
+    //if true, comment and rating is updated to a new value from the request body passed
+    product.reviews.forEach((review) => {
+      if (review.user.toString() == req.user.id.toString()) {
+        review.rating = rating;
+        review.comment = comment;
+      }
+    });
+  } else {
+    //creating a review
+    //if false, new review is added to the array using push method to reviews
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length; //numOfReviews is assigned with the length of thr array
+  }
+
+  //finding the average of the product reviews
+  product.ratings =
+    product.reviews.reduce((acc, review) => {
+      return acc + review.rating;
+    }, 0) / product.reviews.length;
+
+  product.ratings = isNaN(product.ratings) ? 0 : product.ratings; //if array is empty, then it returns NaN value, so to avoid that assigning 0
+
+  await product.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    message: "Review Updated",
+  });
+});

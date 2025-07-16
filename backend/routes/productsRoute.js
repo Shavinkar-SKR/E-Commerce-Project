@@ -5,6 +5,7 @@ const {
   getOneProduct,
   updateProduct,
   deleteProduct,
+  newReview,
 } = require("../controllers/productController");
 const {
   isAuthenticatedUser,
@@ -23,6 +24,8 @@ router
 // router.route("/product/:id").get(getOneProduct);
 // router.route("/product/:id").put(updateProduct);
 // router.route("/product/:id").delete(deleteProduct); using method chaining it can written like this too if url is same
+
+router.route("/review").put(isAuthenticatedUser, newReview);
 
 //Admin routes
 router
