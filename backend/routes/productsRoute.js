@@ -7,6 +7,7 @@ const {
   deleteProduct,
   newReview,
   getReviews,
+  deleteReview,
 } = require("../controllers/productController");
 const {
   isAuthenticatedUser,
@@ -30,6 +31,7 @@ router
 //Review routes
 router.route("/review").put(isAuthenticatedUser, newReview);
 router.route("/reviews").get(getReviews);
+router.route("/review").delete(deleteReview);
 //Admin routes - Product
 router
   .route("admin/product/new")
