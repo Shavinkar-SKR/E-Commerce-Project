@@ -151,3 +151,13 @@ exports.newReview = catchAsyncError(async (req, res, next) => {
     message: "Review Updated",
   });
 });
+
+//Get all reviews of a product - api/v1/reviews?id=productId
+exports.getReviews = catchAsyncError(async (req, res, next) => {
+  const product = await productModel.findById(req.query.id);
+
+  res.status(200).json({
+    success: true,
+    review: product.reviews,
+  });
+});
