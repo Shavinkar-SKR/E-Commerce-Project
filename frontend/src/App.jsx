@@ -10,6 +10,7 @@ function App() {
     <Router>
       <div className="App">
         <HelmetProvider>
+          {/*Wrapped the components to dynamically change the title for different pages surfed*/}
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />

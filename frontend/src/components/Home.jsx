@@ -1,4 +1,4 @@
-import MetaData from "./layouts/MetaData";
+import MetaData from "./layouts/MetaData"; //customed function imported to pass the title of this component as props
 
 export default function Home() {
   return (
