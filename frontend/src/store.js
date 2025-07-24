@@ -4,7 +4,7 @@ import productsReducer from "./slices/productsSlice";
 
 const reducer = combineReducers({
   //creating a root reducer by combining individual reducers
-  productsReducer: productsReducer,
+  productsState: productsReducer,
 });
 
 const store = configureStore({
