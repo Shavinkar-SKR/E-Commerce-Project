@@ -3,55 +3,63 @@
     "name": "OPPO F21s Pro 5G",
     "price": 245.67,
     "description": "OPPO F21S Pro 5G is a powerful device with amazing features and a sleek design.",
-    "ratings": "0",
-    "images": [{ "image": "product_87759895.jpg" }],
+    "ratings": 3.5,
+    "images": [
+      { "image": "/images/products/1.jpg" },
+      { "image": "/images/products/2.jpg" }
+    ],
     "category": "Mobile phones",
     "seller": "Amazon",
     "stock": 5,
+    "numOfReviews": 3,
     "reviews": []
   },
   {
     "name": "Dell Inspiron 15 Laptop",
     "price": 699.99,
     "description": "Dell Inspiron 15 with Intel i5 processor and 8GB RAM, suitable for office and school work.",
-    "ratings": "0",
-    "images": [{ "image": "product_23984723.jpg" }],
+    "ratings": 4.5,
+    "images": [{ "image": "/images/products/2.jpg" }],
     "category": "Laptops",
     "seller": "Dell Official Store",
     "stock": 8,
+    "numOfReviews": 6,
     "reviews": []
   },
   {
     "name": "Sony WH-1000XM5 Headphones",
     "price": 299.0,
     "description": "Industry-leading noise canceling headphones with premium sound quality.",
-    "ratings": "0",
-    "images": [{ "image": "product_98437482.jpg" }],
+    "ratings": 3,
+    "images": [{ "image": "/images/products/3.jpg" }],
     "category": "Headphones",
     "seller": "Sony Center",
     "stock": 12,
+    "numOfReviews": 7,
     "reviews": []
   },
   {
     "name": "The Psychology of Money",
     "price": 15.99,
     "description": "A book that teaches how money works and how to make better financial decisions.",
-    "ratings": "0",
-    "images": [{ "image": "product_87364512.jpg" }],
+    "ratings": 5,
+    "images": [{ "image": "/images/products/4.jpg" }],
     "category": "Books",
     "seller": "Flipkart",
     "stock": 20,
+    "numOfReviews": 9,
     "reviews": []
   },
   {
     "name": "Nike Air Zoom Pegasus 40",
     "price": 129.99,
     "description": "Running shoes designed for comfort and long-distance runs with breathable mesh.",
-    "ratings": "0",
-    "images": [{ "image": "product_12734985.jpg" }],
+    "ratings": 3.5,
+    "images": [{ "image": "/images/products/5.jpg" }],
     "category": "Clothes/Shoes",
     "seller": "Nike",
     "stock": 10,
+    "numOfReviews": 14,
     "reviews": []
   }
 ]
