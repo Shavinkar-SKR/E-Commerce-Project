@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import MetaData from "./layouts/MetaData"; //customed function imported to pass the title of this component as props
+import { getProducts } from "../actions/productsAction";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts);
+  }, []);
+
   return (
     <>
       <MetaData title={"Buy Best Products"} />
