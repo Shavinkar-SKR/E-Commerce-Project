@@ -15,6 +15,8 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
   //passes productModel.find() into the constructor. That does not execute the query immediately — it creates a Mongoose Query object, not a Promise yet.
   const products = await apiFeatures.query;
+
+  await new Promise((resolve) => setTimeout(resolve, 3000)); //to make visibility of the loading content
   res.status(200).json({
     success: true,
     count: products.length,
