@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"; //combineReducers is used to combine multiple slice reducers into one.
 // import thunk from "redux-thunk"; //importing redux-thunk middleware to handle asynchronous actions in Redux.
 import productsReducer from "./slices/productsSlice";
+import productReducer from "./slices/productSlice";
 
 const reducer = combineReducers({
   //creating a root reducer by combining individual reducers
   productsState: productsReducer,
+  productState: productReducer,
 });
 
 const store = configureStore({
