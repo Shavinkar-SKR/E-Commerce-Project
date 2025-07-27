@@ -1,18 +1,20 @@
 import { useEffect } from "react";
 import { getOneProduct } from "../../actions/productAction";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getOneProduct);
+    dispatch(getOneProduct(id));
   }, []);
 
   return (
     <div className="row f-flex justify-content-around">
       <div className="col-12 col-lg-5 img-fluid" id="product_image">
-        <img src="./images/products/3.jpg" alt="sdf" height="500" width="500" />
+        <img src="/images/products/3.jpg" alt="sdf" height="500" width="500" />
       </div>
 
       <div className="col-12 col-lg-5 mt-5">

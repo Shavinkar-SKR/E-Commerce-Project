@@ -15,10 +15,12 @@ function App() {
           {/*Wrapped the components to dynamically change the title for different pages surfed*/}
           <Header />
           <ToastContainer theme="dark" />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-          </Routes>
+          <div className="container container-fluid">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+            </Routes>
+          </div>
           <Footer />
         </HelmetProvider>
       </div>
