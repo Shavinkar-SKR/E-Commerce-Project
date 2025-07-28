@@ -6,7 +6,7 @@ const productsSlice = createSlice({
     loading: false,
   },
   reducers: {
-    productsRequest(state, action) {
+    productsRequest() {
       return {
         loading: true,
       };
@@ -15,6 +15,8 @@ const productsSlice = createSlice({
       return {
         loading: false,
         products: action.payload.products,
+        count: action.payload.count,
+        resPerPage: action.payload.resPerPage,
       };
     },
     productsFail(state, action) {

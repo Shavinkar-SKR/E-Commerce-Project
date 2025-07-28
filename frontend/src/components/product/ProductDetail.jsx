@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../layouts/Loader";
 import { Carousel, CarouselItem } from "react-bootstrap";
+import MetaData from "../layouts/MetaData";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ export default function ProductDetail() {
         <Loader />
       ) : (
         <Fragment>
+          <MetaData title={product.name} />
+
           <div className="row f-flex justify-content-around">
             <div className="col-12 col-lg-5 img-fluid" id="product_image">
               <Carousel pause="hover">
