@@ -20,7 +20,7 @@ export default function Home() {
     }
 
     dispatch(getProducts);
-  }, [error]);
+  }, [error, dispatch]);
 
   return (
     <Fragment>
@@ -35,7 +35,7 @@ export default function Home() {
             <div className="row">
               {products &&
                 products.map((product, index) => (
-                  <Product product={product} index={index} />
+                  <Product product={product} key={index} index={index} />
                 ))}
             </div>
           </section>

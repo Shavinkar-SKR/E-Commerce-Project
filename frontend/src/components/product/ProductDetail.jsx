@@ -20,7 +20,7 @@ export default function ProductDetail() {
       });
     }
     dispatch(getOneProduct(id));
-  }, [error]);
+  }, [error, id, dispatch]);
 
   return (
     <Fragment>
