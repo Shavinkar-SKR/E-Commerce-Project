@@ -46,7 +46,7 @@ export default function Home() {
                 ))}
             </div>
           </section>
-          {count > 0 ? (
+          {count > 0 && count > resPerPage ? (
             <div className="d-flex justify-content-center mt-5">
               <ReactPaginate
                 pageCount={Math.ceil(count / resPerPage)} // total pages
