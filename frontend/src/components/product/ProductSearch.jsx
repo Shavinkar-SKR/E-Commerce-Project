@@ -1,19 +1,22 @@
 import { Fragment, useEffect } from "react";
-import MetaData from "./layouts/MetaData"; //customed function imported to pass the title of this component as props
-import { getProducts } from "../actions/productsAction";
+import MetaData from ".././layouts/MetaData"; //customed function imported to pass the title of this component as props
+import { getProducts } from "../../actions/productsAction";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "./layouts/Loader";
-import Product from "./product/Product";
+import Loader from ".././layouts/Loader";
+import Product from "./Product";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
-export default function Home() {
+export default function ProductSearch() {
   const dispatch = useDispatch();
   const { products, loading, error, count, resPerPage } = useSelector(
     (state) => state.productsState
   );
+
   const [currentPage, setCurrentPage] = useState(1);
+  const { keyword } = useParams();
 
   const setCurrentPageNo = (pageNo) => {
     setCurrentPage(pageNo);
@@ -26,8 +29,8 @@ export default function Home() {
       });
     }
 
-    dispatch(getProducts(null, currentPage)); //here null is given so that on the Home page doesn't load based on the keyword
-  }, [error, dispatch, currentPage]);
+    dispatch(getProducts(keyword, currentPage));
+  }, [error, dispatch, currentPage, keyword]);
 
   return (
     <Fragment>
@@ -36,7 +39,7 @@ export default function Home() {
       ) : (
         <Fragment>
           <MetaData title={"Buy Best Products"} />
-          <h1 id="products_heading">Latest Products</h1>
+          <h1 id="products_heading">Search Products</h1>
 
           <section id="products" className="container mt-5">
             <div className="row">
