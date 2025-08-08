@@ -3,7 +3,7 @@ import MetaData from "../layouts/MetaData";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/userAction";
+import { clearAuthError, login } from "../../actions/userAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -29,10 +29,14 @@ export default function Login() {
     if (error) {
       toast.error(error, {
         position: "bottom-center",
+        type: "error",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
       });
       return;
     }
-  }, [error, isAuthenticated]);
+  }, [error, isAuthenticated, dispatch]);
 
   return (
     <Fragment>

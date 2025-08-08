@@ -29,9 +29,15 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
+    clearError(state, action) {
+      return {
+        ...state,
+        error: null,
+      };
+    },
   },
 });
 
 const { actions, reducer } = authSlice;
-export const { loginRequest, loginSuccess, loginFail } = actions;
+export const { loginRequest, loginSuccess, loginFail, clearError } = actions;
 export default reducer;
