@@ -5,12 +5,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/userAction";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, error } = useSelector((state) => state.authState);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.authState
+  );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -18,13 +22,17 @@ export default function Login() {
   };
 
   useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+
     if (error) {
       toast.error(error, {
         position: "bottom-center",
       });
       return;
     }
-  }, [error]);
+  }, [error, isAuthenticated]);
 
   return (
     <Fragment>
