@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Search from "./Search";
 
 export default function Header() {
@@ -6,11 +7,13 @@ export default function Header() {
       <nav className="navbar row">
         <div className="col-12 col-md-3">
           <div className="navbar-brand">
-            <img
-              width="150px"
-              src="/images/logo.png"
-              alt="Ecommerce Marketplace"
-            />
+            <Link to="/">
+              <img
+                width="150px"
+                src="/images/logo.png"
+                alt="Ecommerce Marketplace"
+              />
+            </Link>
           </div>
         </div>
 

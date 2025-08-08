@@ -8,20 +8,31 @@ const APIFeatures = require("../utils/apiFeatures");
 //Get Product - /api/v1/products
 exports.getProducts = catchAsyncError(async (req, res, next) => {
   const resPerPage = 3;
-  const apiFeatures = new APIFeatures(productModel.find(), req.query)
-    .search()
-    .filter()
-    .paginate(resPerPage);
+  // const apiFeatures = new APIFeatures(productModel.find(), req.query)
+  //   .search()
+  //   //.filter()
+  //   .paginate(resPerPage);
+
+  let buildQuery = () => {
+    return new APIFeatures(productModel.find(), req.query).search(); //.filter();
+  };
+
+  const filteredProductsCount = await buildQuery().query.countDocuments({});
+  const totalProductsCount = await productModel.countDocuments({});
+  let productsCount = totalProductsCount;
+
+  if (filteredProductsCount !== totalProductsCount) {
+    productsCount = filteredProductsCount;
+  }
 
   //passes productModel.find() into the constructor. That does not execute the query immediately — it creates a Mongoose Query object, not a Promise yet.
-  const products = await apiFeatures.query;
-  const totalProductsCount = await productModel.countDocuments({});
+  const products = await buildQuery().paginate(resPerPage).query;
 
-  await new Promise((resolve) => setTimeout(resolve, 3000)); //to make visibility of the loading content
+  await new Promise((resolve) => setTimeout(resolve, 1000)); //to make visibility of the loading content
   // return next(new ErrorHandler("Unable to fetch data", 404));
   res.status(200).json({
     success: true,
-    count: totalProductsCount,
+    count: productsCount,
     resPerPage,
     products,
   });
