@@ -1,14 +1,26 @@
+import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Search() {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const searchHandler = (e) => {
     e.preventDefault(); //disables refreshing
     navigate(`/search/${keyword}`);
   };
+
+  const clearSearch = () => {
+    setKeyword("");
+  };
+
+  useEffect(() => {
+    if (location.pathname == "/") {
+      clearSearch();
+    }
+  }, [location]);
 
   return (
     <form onSubmit={searchHandler}>
