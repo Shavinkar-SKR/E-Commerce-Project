@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function Search() {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); //gives the information about the current URL the user is on. useLocation() is like "where am I right now"
 
   const searchHandler = (e) => {
     e.preventDefault(); //disables refreshing
@@ -17,7 +17,7 @@ export default function Search() {
   };
 
   useEffect(() => {
-    if (location.pathname == "/") {
+    if (location.pathname === "/") {
       clearSearch();
     }
   }, [location]);

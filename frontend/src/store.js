@@ -2,11 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit"; //combineRed
 // import thunk from "redux-thunk"; //importing redux-thunk middleware to handle asynchronous actions in Redux.
 import productsReducer from "./slices/productsSlice";
 import productReducer from "./slices/productSlice";
+import userReducer from "./slices/userSlice";
 
 const reducer = combineReducers({
   //creating a root reducer by combining individual reducers
   productsState: productsReducer,
   productState: productReducer,
+  userState: userReducer,
 });
 
 const store = configureStore({
