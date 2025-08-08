@@ -8,7 +8,7 @@ const reducer = combineReducers({
   //creating a root reducer by combining individual reducers
   productsState: productsReducer,
   productState: productReducer,
-  userState: userReducer,
+  authState: userReducer,
 });
 
 const store = configureStore({
