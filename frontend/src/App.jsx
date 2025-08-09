@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import ProductDetail from "./components/product/ProductDetail";
 import ProductSearch from "./components/product/ProductSearch";
 import Login from "./components/user/Login";
+import Register from "./components/user/Register";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/search/:keyword" element={<ProductSearch />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </div>
           <Footer />
