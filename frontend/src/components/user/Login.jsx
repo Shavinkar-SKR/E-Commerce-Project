@@ -3,7 +3,7 @@ import MetaData from "../layouts/MetaData";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAuthError, login } from "../../actions/userAction";
+import { clearAuthError, login } from "../../actions/authAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
