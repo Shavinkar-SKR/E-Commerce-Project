@@ -1,4 +1,36 @@
+import { useState } from "react";
+
 export default function Register() {
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState(
+    "images/default_avatar.png"
+  );
+
+  const onChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+      reader.onload = () => {
+        //onload is an event handler that will run after the file has been successfully read by FileReader
+        if (reader.readyState === 2) {
+          //readyState tells, the progress of the file reading:
+          //0 -> EMPTY (no file yet), 1 -> LOADING (reading in progress), 2 -> DONE (reading finished). Here, we only proceed if reading is complete.
+          setAvatarPreview(reader.result); //reader.result contains the file’s contents.
+          setAvatar(e.target.files[0]); //stores the original File object in state so it can be sent to the backend later in a FormData request.
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="row wrapper">
       <div className="col-10 col-lg-5">
@@ -8,30 +40,36 @@ export default function Register() {
           <div className="form-group">
             <label htmlFor="email_field">Name</label>
             <input
+              name="name"
+              onChange={onChange}
               type="name"
               id="name_field"
               className="form-control"
-              value=""
+              value={userData.name}
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="email_field">Email</label>
             <input
+              name="email"
+              onChange={onChange}
               type="email"
               id="email_field"
               className="form-control"
-              value=""
+              value={userData.email}
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="password_field">Password</label>
             <input
+              name="password"
+              onChange={onChange}
               type="password"
               id="password_field"
               className="form-control"
-              value=""
+              value={userData.password}
             />
           </div>
 
@@ -41,7 +79,7 @@ export default function Register() {
               <div>
                 <figure className="avatar mr-3 item-rtl">
                   <img
-                    src="./images/profile.jpg"
+                    src={avatarPreview}
                     className="rounded-circle"
                     alt="image"
                   />
@@ -51,6 +89,7 @@ export default function Register() {
                 <input
                   type="file"
                   name="avatar"
+                  onChange={onChange}
                   className="custom-file-input"
                   id="customFile"
                 />
