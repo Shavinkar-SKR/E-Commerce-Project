@@ -11,7 +11,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
   let avatar; //here this is undefined
   if (req.file) {
-    avatar = `${req.protocol}://${req.host}/uploads/user/${req.file.originalname}`;
+    avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`;
   }
 
   //Create a new user document in MongoDB

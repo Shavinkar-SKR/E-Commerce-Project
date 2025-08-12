@@ -75,7 +75,7 @@ export default function ProductDetail() {
                   type="number"
                   className="form-control count d-inline"
                   value="1"
-                  readonly
+                  readOnly
                 />
 
                 <span className="btn btn-primary plus">+</span>
@@ -124,7 +124,7 @@ export default function ProductDetail() {
                   <div
                     className="modal fade"
                     id="ratingModal"
-                    tabindex="-1"
+                    tabIndex="-1"
                     role="dialog"
                     aria-labelledby="ratingModalLabel"
                     aria-hidden="true"
