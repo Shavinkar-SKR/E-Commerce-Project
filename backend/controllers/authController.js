@@ -7,7 +7,12 @@ const crypto = require("crypto");
 
 //Creates a user - /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  const { name, email, password, avatar } = req.body; //Destructure user details (name, email, password, avatar) from request body
+  const { name, email, password } = req.body; //Destructure user details (name, email, password, avatar) from request body
+
+  let avatar; //here this is undefined
+  if (req.file) {
+    avatar = `${req.protocol}://${req.host}/uploads/user/${req.file.originalname}`;
+  }
 
   //Create a new user document in MongoDB
   const user = await userModel.create({

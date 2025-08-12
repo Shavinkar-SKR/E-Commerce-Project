@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../actions/authAction";
+import { toast } from "react-toastify";
+import { clearAuthError } from "../../actions/authAction";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [userData, setUserData] = useState({
@@ -6,6 +11,10 @@ export default function Register() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.authState);
 
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
@@ -26,15 +35,44 @@ export default function Register() {
       };
 
       reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUserData({ ...userData, [e.target.name]: e.target.value });
     }
-
-    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", userData.name);
+    formData.append("email", userData.email);
+    formData.append("password", userData.password);
+    formData.append("avatar", avatar);
+
+    dispatch(register(formData));
+    navigate("/");
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "bottom-center",
+        type: "error",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
+      });
+      return;
+    }
+  }, [error]);
 
   return (
     <div className="row wrapper">
       <div className="col-10 col-lg-5">
-        <form className="shadow-lg" encType="multipart/form-data">
+        <form
+          onSubmit={submitHandler}
+          className="shadow-lg"
+          encType="multipart/form-data"
+        >
           <h1 className="mb-3">Register</h1>
 
           <div className="form-group">
@@ -104,6 +142,7 @@ export default function Register() {
             id="register_button"
             type="submit"
             className="btn btn-block py-3"
+            disabled={loading}
           >
             REGISTER
           </button>
