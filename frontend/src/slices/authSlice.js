@@ -57,6 +57,30 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
+
+    loadUserRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+        isAuthenticated: false,
+      };
+    },
+
+    loadUserSuccess(state, action) {
+      return {
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload.user,
+      };
+    },
+
+    loadUserFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
   },
 });
 
@@ -69,5 +93,8 @@ export const {
   registerFail,
   registerRequest,
   registerSuccess,
+  loadUserFail,
+  loadUserRequest,
+  loadUserSuccess,
 } = actions;
 export default reducer;

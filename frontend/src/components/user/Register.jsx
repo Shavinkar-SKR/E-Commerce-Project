@@ -14,7 +14,9 @@ export default function Register() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.authState);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.authState
+  );
 
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
@@ -49,10 +51,14 @@ export default function Register() {
     formData.append("avatar", avatar);
 
     dispatch(register(formData));
-    navigate("/");
   };
 
   useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+      return;
+    }
+
     if (error) {
       toast.error(error, {
         position: "bottom-center",
@@ -63,7 +69,7 @@ export default function Register() {
       });
       return;
     }
-  }, [error]);
+  }, [error, isAuthenticated]);
 
   return (
     <div className="row wrapper">
