@@ -17,7 +17,7 @@ const router = express.Router();
 
 //Product Routes
 // Protect the /products route — only accessible if user is authenticated via JWT token in cookies
-router.route("/products").get(isAuthenticatedUser, getProducts);
+router.route("/products").get(getProducts);
 
 router
   .route("/product/:id")

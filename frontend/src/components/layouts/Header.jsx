@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import Search from "./Search";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownButton, Dropdown, Image } from "react-bootstrap";
+import { logout } from "../../actions/authAction";
 
 export default function Header() {
   const { isAuthenticated, user } = useSelector((state) => state.authState);
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logout);
+  };
 
   return (
     <>
@@ -41,7 +47,9 @@ export default function Header() {
                 <span>{user.name}</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item className="text-danger">Logout</Dropdown.Item>
+                <Dropdown.Item onClick={logoutHandler} className="text-danger">
+                  Logout
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           ) : (
