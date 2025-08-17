@@ -46,7 +46,13 @@ router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").post(resetPassword);
 router.route("/myprofile").get(isAuthenticatedUser, getUserProfile);
 router.route("/password/change").put(isAuthenticatedUser, changePassword);
-router.route("/update").put(isAuthenticatedUser, updateProfile);
+router
+  .route("/update")
+  .put(isAuthenticatedUser, upload.single("avatar"), updateProfile);
+//Expect a single file upload in the request.
+//The file must come in the field named "avatar".
+//Multer will process that file, store it in your /uploads/user folder, and make it available as req.file.
+//Without upload.single("avatar"), Express doesn’t understand multipart/form-data, so req.body is undefined and req.file never exists.
 
 //Admin routes
 router

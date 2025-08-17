@@ -180,10 +180,16 @@ exports.changePassword = catchAsyncErrors(async (req, res, next) => {
 
 //Functionality to Update Profile - /api/v1/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const newData = {
+  let newData = {
     name: req.body.name,
     email: req.body.email,
   };
+
+  let avatar; //here this is undefined
+  if (req.file) {
+    avatar = `${process.env.BACKEND_URL}/uploads/user/${req.file.originalname}`;
+    newData = { ...newData, avatar };
+  }
 
   const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
     new: true,
