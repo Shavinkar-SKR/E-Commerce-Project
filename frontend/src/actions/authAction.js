@@ -12,6 +12,8 @@ import {
   registerFail,
   registerRequest,
   registerSuccess,
+  updatePasswordFail,
+  updatePasswordRequest,
   updateProfileFail,
   updateProfileRequest,
   updateProfileSuccess,
@@ -79,13 +81,19 @@ export const updateProfile = (userData) => async (dispatch) => {
     };
 
     const { data } = await axios.put("/api/v1/update", userData, config);
-    console.log("Update profile response:", data);
     dispatch(updateProfileSuccess({ user: data.user }));
   } catch (error) {
-    console.error(
-      "Update profile error:",
-      error.response?.data || error.message
-    );
     dispatch(updateProfileFail(error.response.data.message));
+  }
+};
+
+export const updatePassword = (formData) => async (dispatch) => {
+  try {
+    dispatch(updatePasswordRequest());
+
+    await axios.put("/api/v1/password/change", formData);
+    dispatch(updateProfileSuccess());
+  } catch (error) {
+    dispatch(updatePasswordFail(error.response.data.message));
   }
 };
